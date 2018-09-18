@@ -1,0 +1,42 @@
+{
+    "name": "bacart/mongodb-bundle",
+    "description": "Bacart MongoDB Symfony bundle",
+    "type": "symfony-bundle",
+    "keywords": [
+        "php",
+        "symfony",
+        "mongodb",
+        "bundle"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "alcaeus/mongo-php-adapter": "^1.1",
+        "bacart/common": "^0.1",
+        "bacart/symfony-aware": "^0.1",
+        "doctrine/mongodb-odm-bundle": "^3.4",
+        "symfony/validator": "^4.1"
+    },
+    "config": {
+        "platform": {
+            "ext-mongo": "1.6.16"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Bacart\\Bundle\\MongoDBBundle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alex Bacart",
+            "email": "alex@bacart.net"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2-dev"
+        }
+    }
+}
