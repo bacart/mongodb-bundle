@@ -15,7 +15,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  * @method AbstractDocument[]    findBy(array $criteria, array $sort = null, $limit = null, $skip = null)
  * @method AbstractDocument[]    findAll()
  */
-class AbstractDocumentRepository extends DocumentRepository
+abstract class AbstractDocumentRepository extends DocumentRepository
 {
     /**
      * {@inheritdoc}
