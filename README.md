@@ -1,6 +1,6 @@
 Bacart MongoDB bundle
 =============================
-[![PHP from Packagist](https://img.shields.io/packagist/php-v/symfony/symfony.svg?style=flat-square)](https://packagist.org/packages/bacart/mongodb-bundle)
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/symfony/symfony.svg)](https://packagist.org/packages/bacart/mongodb-bundle)
 [![Latest Stable Version](https://poser.pugx.org/bacart/mongodb-bundle/v/stable.png)](https://packagist.org/packages/bacart/mongodb-bundle)
 [![Total Downloads](https://poser.pugx.org/bacart/mongodb-bundle/downloads.svg)](https://packagist.org/packages/bacart/mongodb-bundle)
 [![License](https://poser.pugx.org/bacart/mongodb-bundle/license.svg)](LICENSE)
