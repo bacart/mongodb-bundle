@@ -17,6 +17,9 @@
         "doctrine/mongodb-odm-bundle": "^3.4",
         "symfony/validator": "^4.1"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^0.10.3"
+    },
     "config": {
         "platform": {
             "ext-mongo": "1.6.16"
