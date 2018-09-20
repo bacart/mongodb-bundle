@@ -36,7 +36,7 @@ class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInter
             $this->documentManager->persist($document);
             $result = $this->updateDocument($document);
         } catch (\InvalidArgumentException $e) {
-            $this->logException($e, get_defined_vars());
+            $this->error($e, get_defined_vars());
             $result = false;
         }
 
@@ -66,7 +66,7 @@ class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInter
                 $this->documentManager->flush($document);
                 $result = true;
             } catch (\InvalidArgumentException $e) {
-                $this->logException($e, get_defined_vars());
+                $this->error($e, get_defined_vars());
                 $result = false;
             }
         }
@@ -94,7 +94,7 @@ class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInter
 
             $result = true;
         } catch (\InvalidArgumentException $e) {
-            $this->logException($e, get_defined_vars());
+            $this->error($e, get_defined_vars());
             $result = false;
         }
 

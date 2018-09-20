@@ -61,7 +61,7 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber, LoggerAwar
 
             return $uow->getDocumentChangeSet($document);
         } catch (\InvalidArgumentException $e) {
-            $this->logException($e, get_defined_vars());
+            $this->error($e, get_defined_vars());
         }
 
         return null;
