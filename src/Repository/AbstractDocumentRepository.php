@@ -3,9 +3,16 @@
 namespace Bacart\Bundle\MongoDBBundle\Repository;
 
 use Bacart\Bundle\MongoDBBundle\Document\AbstractDocument;
-use Bacart\Bundle\MongoDBBundle\Exception\RepositoryException;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+use Bacart\Bundle\MongoDBBundle\Exception\RepositoryDocumentNotFoundException;
+use Bacart\SymfonyCommon\Interfaces\LoggerAwareInterface;
+use Bacart\SymfonyCommon\Traits\LoggerAwareTrait;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
+use Doctrine\Common\Annotations\AnnotationException;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\LockMode;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ODM\MongoDB\Query\Builder;
 
@@ -15,12 +22,42 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  * @method AbstractDocument[]    findBy(array $criteria, array $sort = null, $limit = null, $skip = null)
  * @method AbstractDocument[]    findAll()
  */
-abstract class AbstractDocumentRepository extends DocumentRepository
+abstract class AbstractDocumentRepository extends ServiceDocumentRepository implements DocumentRepositoryInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
+    /** @var AnnotationReader */
+    protected $annotationReader;
+
     /**
      * {@inheritdoc}
      *
-     * @param array|null $criteria
+     * @throws RepositoryDocumentNotFoundException
+     * @throws AnnotationException
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $this->annotationReader = new AnnotationReader();
+
+        /** @var ObjectManager $manager */
+        foreach ($registry->getManagers() as $manager) {
+            foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
+                $reflectionClass = $metadata->getReflectionClass();
+                $repositoryClass = $this->getDocumentRepository($reflectionClass);
+
+                if (static::class === $repositoryClass) {
+                    parent::__construct($registry, $reflectionClass->getName());
+
+                    return;
+                }
+            }
+        }
+
+        throw new RepositoryDocumentNotFoundException(static::class);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function createQueryBuilder(array $criteria = null): Builder
     {
@@ -34,13 +71,9 @@ abstract class AbstractDocumentRepository extends DocumentRepository
     }
 
     /**
-     * @param array|null $criteria
-     *
-     * @throws RepositoryException
-     *
-     * @return int
+     * {@inheritdoc}
      */
-    public function count(array $criteria = null): int
+    public function count(array $criteria = null): ?int
     {
         try {
             return $this->createQueryBuilder($criteria)
@@ -49,19 +82,16 @@ abstract class AbstractDocumentRepository extends DocumentRepository
                 ->getQuery()
                 ->execute();
         } catch (\InvalidArgumentException | MongoDBException $e) {
-            throw new RepositoryException($e);
+            $this->error($e, get_defined_vars());
         }
+
+        return null;
     }
 
     /**
-     * @param string     $fieldName
-     * @param array|null $criteria
-     *
-     * @throws RepositoryException
-     *
-     * @return mixed // TODO: check, maybe : ?array
+     * {@inheritdoc}
      */
-    public function distinct(string $fieldName, array $criteria = null)
+    public function distinct(string $fieldName, array $criteria = null): ?iterable
     {
         try {
             return $this->createQueryBuilder($criteria)
@@ -69,7 +99,27 @@ abstract class AbstractDocumentRepository extends DocumentRepository
                 ->getQuery()
                 ->execute();
         } catch (\InvalidArgumentException | MongoDBException $e) {
-            throw new RepositoryException($e);
+            $this->error($e, get_defined_vars());
         }
+
+        return null;
+    }
+
+    /**
+     * @param \ReflectionClass $reflectionClass
+     *
+     * @return string|null
+     */
+    protected function getDocumentRepository(\ReflectionClass $reflectionClass): ?string
+    {
+        $annotations = $this->annotationReader->getClassAnnotations($reflectionClass);
+
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Document) {
+                return $annotation->repositoryClass;
+            }
+        }
+
+        return null;
     }
 }

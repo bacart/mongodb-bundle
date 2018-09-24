@@ -14,7 +14,7 @@
         "alcaeus/mongo-php-adapter": "^1.1",
         "bacart/common": "^0.1",
         "bacart/symfony-common": "^0.1",
-        "doctrine/mongodb-odm-bundle": "^3.4",
+        "doctrine/mongodb-odm-bundle": "^3.5",
         "symfony/validator": "^4.1"
     },
     "require-dev": {
