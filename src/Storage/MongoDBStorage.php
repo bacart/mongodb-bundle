@@ -12,26 +12,17 @@ use Bacart\SymfonyCommon\Traits\LoggerAwareTrait;
 use Bacart\SymfonyCommon\Traits\SessionAwareTrait;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
-class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInterface, LoggerAwareInterface
+class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInterface, SessionAwareInterface, LoggerAwareInterface
 {
     use DocumentManagerAwareTrait;
     use SessionAwareTrait;
     use LoggerAwareTrait;
 
-    protected const ACTION_DOCUMENT_CREATED = 'created';
-    protected const ACTION_DOCUMENT_UPDATED = 'updated';
-    protected const ACTION_DOCUMENT_DELETED = 'deleted';
-
     /**
-     * @param AbstractDocument $document
-     * @param bool             $addFlash
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function createDocument(
-        AbstractDocument $document,
-        bool $addFlash = false
-    ): bool {
+    public function createDocument(AbstractDocument $document, bool $addFlash = false): bool
+    {
         try {
             $this->documentManager->persist($document);
             $result = $this->updateDocument($document);
@@ -41,22 +32,17 @@ class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInter
         }
 
         if ($addFlash) {
-            $this->addFlash($document, static::ACTION_DOCUMENT_CREATED, $result);
+            $this->addFlash($document, MongoDBStorageInterface::ACTION_DOCUMENT_CREATED, $result);
         }
 
         return $result;
     }
 
     /**
-     * @param AbstractDocument $document
-     * @param bool             $addFlash
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function updateDocument(
-        AbstractDocument $document,
-        bool $addFlash = false
-    ): bool {
+    public function updateDocument(AbstractDocument $document, bool $addFlash = false): bool
+    {
         $uow = $this->documentManager->getUnitOfWork();
 
         if (UnitOfWork::STATE_MANAGED !== $uow->getDocumentState($document)) {
@@ -72,22 +58,17 @@ class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInter
         }
 
         if ($addFlash) {
-            $this->addFlash($document, static::ACTION_DOCUMENT_UPDATED, $result);
+            $this->addFlash($document, MongoDBStorageInterface::ACTION_DOCUMENT_UPDATED, $result);
         }
 
         return $result;
     }
 
     /**
-     * @param AbstractDocument $document
-     * @param bool             $addFlash
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function deleteDocument(
-        AbstractDocument $document,
-        bool $addFlash = false
-    ): bool {
+    public function deleteDocument(AbstractDocument $document, bool $addFlash = false): bool
+    {
         try {
             $this->documentManager->remove($document);
             $this->documentManager->flush($document);
@@ -99,22 +80,17 @@ class MongoDBStorage implements DocumentManagerAwareInterface, SessionAwareInter
         }
 
         if ($addFlash) {
-            $this->addFlash($document, static::ACTION_DOCUMENT_DELETED, $result);
+            $this->addFlash($document, MongoDBStorageInterface::ACTION_DOCUMENT_DELETED, $result);
         }
 
         return $result;
     }
 
     /**
-     * @param AbstractDocument $document
-     * @param string           $action
-     * @param bool             $result
+     * {@inheritdoc}
      */
-    protected function addFlash(
-        AbstractDocument $document,
-        string $action,
-        bool $result
-    ): void {
+    public function addFlash(AbstractDocument $document, string $action, bool $result): void
+    {
         if (null === $this->session) {
             $this->logger->warning('You can not use the addFlash method if sessions are disabled. Enable them in "config/packages/framework.yaml".');
 

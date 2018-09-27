@@ -2,16 +2,10 @@
 
 namespace Bacart\Bundle\MongoDBBundle\Repository;
 
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Doctrine\ODM\MongoDB\Query\Builder;
 
 interface DocumentRepositoryInterface
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry);
-
     /**
      * @param array|null $criteria
      *

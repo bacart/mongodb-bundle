@@ -19,6 +19,7 @@
             </call>
 
             <tag name="monolog.logger" channel="bacart_mongodb" />
+            <tag name="mongodb.storage" />
         </service>
 
         <service id="Bacart\Bundle\MongoDBBundle\DoctrineEventSubscriber\CreatedUpdatedSubscriber">

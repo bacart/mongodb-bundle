@@ -30,7 +30,7 @@ abstract class AbstractDocumentRepository extends ServiceDocumentRepository impl
     protected $annotationReader;
 
     /**
-     * {@inheritdoc}
+     * @param ManagerRegistry $registry
      *
      * @throws RepositoryDocumentNotFoundException
      * @throws AnnotationException
