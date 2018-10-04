@@ -39,10 +39,11 @@ abstract class AbstractParamConverter implements ParamConverterInterface, Docume
         if ($configuration->isOptional()) {
             return false;
         }
-
+    
         throw new NotFoundHttpException(sprintf(
-            '%s with id "%s" not found',
+            '%s not found by %s "%s"',
             ClassUtils::getClassShortName($class),
+            $meta->identifier,
             $id
         ));
     }
