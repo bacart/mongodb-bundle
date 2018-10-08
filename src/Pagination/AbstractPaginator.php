@@ -2,8 +2,8 @@
 
 namespace Bacart\Bundle\MongoDBBundle\Pagination;
 
-use Bacart\SymfonyCommon\Interfaces\DocumentManagerAwareInterface;
-use Bacart\SymfonyCommon\Traits\DocumentManagerAwareTrait;
+use Bacart\SymfonyCommon\Aware\Interfaces\DocumentManagerAwareInterface;
+use Bacart\SymfonyCommon\Aware\Traits\DocumentManagerAwareTrait;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\Request;

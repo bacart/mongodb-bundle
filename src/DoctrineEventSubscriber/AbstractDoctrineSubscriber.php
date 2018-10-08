@@ -4,8 +4,8 @@ namespace Bacart\Bundle\MongoDBBundle\DoctrineEventSubscriber;
 
 use Bacart\Bundle\MongoDBBundle\Document\AbstractDocument;
 use Bacart\Common\Util\ClassUtils;
-use Bacart\SymfonyCommon\Interfaces\LoggerAwareInterface;
-use Bacart\SymfonyCommon\Traits\LoggerAwareTrait;
+use Bacart\SymfonyCommon\Aware\Interfaces\LoggerAwareInterface;
+use Bacart\SymfonyCommon\Aware\Traits\LoggerAwareTrait;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;

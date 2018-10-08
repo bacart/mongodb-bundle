@@ -3,8 +3,8 @@
 namespace Bacart\Bundle\MongoDBBundle\Request\ParamConverter;
 
 use Bacart\Common\Util\ClassUtils;
-use Bacart\SymfonyCommon\Interfaces\DocumentManagerAwareInterface;
-use Bacart\SymfonyCommon\Traits\DocumentManagerAwareTrait;
+use Bacart\SymfonyCommon\Aware\Interfaces\DocumentManagerAwareInterface;
+use Bacart\SymfonyCommon\Aware\Traits\DocumentManagerAwareTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +39,7 @@ abstract class AbstractParamConverter implements ParamConverterInterface, Docume
         if ($configuration->isOptional()) {
             return false;
         }
-    
+
         throw new NotFoundHttpException(sprintf(
             '%s not found by %s "%s"',
             ClassUtils::getClassShortName($class),

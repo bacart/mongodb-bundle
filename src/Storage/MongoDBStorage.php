@@ -4,12 +4,12 @@ namespace Bacart\Bundle\MongoDBBundle\Storage;
 
 use Bacart\Bundle\MongoDBBundle\Document\AbstractDocument;
 use Bacart\Common\Util\ClassUtils;
-use Bacart\SymfonyCommon\Interfaces\DocumentManagerAwareInterface;
-use Bacart\SymfonyCommon\Interfaces\LoggerAwareInterface;
-use Bacart\SymfonyCommon\Interfaces\SessionAwareInterface;
-use Bacart\SymfonyCommon\Traits\DocumentManagerAwareTrait;
-use Bacart\SymfonyCommon\Traits\LoggerAwareTrait;
-use Bacart\SymfonyCommon\Traits\SessionAwareTrait;
+use Bacart\SymfonyCommon\Aware\Interfaces\DocumentManagerAwareInterface;
+use Bacart\SymfonyCommon\Aware\Interfaces\LoggerAwareInterface;
+use Bacart\SymfonyCommon\Aware\Interfaces\SessionAwareInterface;
+use Bacart\SymfonyCommon\Aware\Traits\DocumentManagerAwareTrait;
+use Bacart\SymfonyCommon\Aware\Traits\LoggerAwareTrait;
+use Bacart\SymfonyCommon\Aware\Traits\SessionAwareTrait;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
 class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInterface, SessionAwareInterface, LoggerAwareInterface

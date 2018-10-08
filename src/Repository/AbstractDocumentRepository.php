@@ -4,8 +4,8 @@ namespace Bacart\Bundle\MongoDBBundle\Repository;
 
 use Bacart\Bundle\MongoDBBundle\Document\AbstractDocument;
 use Bacart\Bundle\MongoDBBundle\Exception\RepositoryDocumentNotFoundException;
-use Bacart\SymfonyCommon\Interfaces\LoggerAwareInterface;
-use Bacart\SymfonyCommon\Traits\LoggerAwareTrait;
+use Bacart\SymfonyCommon\Aware\Interfaces\LoggerAwareInterface;
+use Bacart\SymfonyCommon\Aware\Traits\LoggerAwareTrait;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
 use Doctrine\Common\Annotations\AnnotationException;
