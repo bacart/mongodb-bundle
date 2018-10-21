@@ -20,10 +20,12 @@
         "symfony/validator": "^4.1"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.10.3"
+        "phpstan/phpstan": "^0.10",
+        "roave/security-advisories": "dev-master"
     },
     "suggest": {
-        "phpstan/phpstan": "PHPStan - PHP Static Analysis Tool"
+        "phpstan/phpstan": "PHPStan - PHP Static Analysis Tool",
+        "roave/security-advisories": "Security advisories as a simple composer exclusion list, regularly updated"
     },
     "config": {
         "platform": {
