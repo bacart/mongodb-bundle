@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Bacart package.
+ *
+ * (c) Alex Bacart <alex@bacart.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Bacart\Bundle\MongoDBBundle\DoctrineEventSubscriber;
 
 use Bacart\Bundle\MongoDBBundle\Field\Interfaces\CreatedAwareInterface;
@@ -11,6 +20,8 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
 {
     /**
      * @param LifecycleEventArgs $eventArgs
+     *
+     * @throws \Exception
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -21,6 +32,8 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
 
     /**
      * @param PreUpdateEventArgs $eventArgs
+     *
+     * @throws \Exception
      */
     public function preUpdate(PreUpdateEventArgs $eventArgs): void
     {
@@ -29,6 +42,8 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
 
     /**
      * @param LifecycleEventArgs $eventArgs
+     *
+     * @throws \Exception
      *
      * @return CreatedUpdatedSubscriber
      */
@@ -46,6 +61,8 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
 
     /**
      * @param LifecycleEventArgs $eventArgs
+     *
+     * @throws \Exception
      *
      * @return CreatedUpdatedSubscriber
      */

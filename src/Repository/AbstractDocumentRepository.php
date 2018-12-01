@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Bacart package.
+ *
+ * (c) Alex Bacart <alex@bacart.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Bacart\Bundle\MongoDBBundle\Repository;
 
 use Bacart\Bundle\MongoDBBundle\Document\AbstractDocument;
@@ -26,9 +35,6 @@ abstract class AbstractDocumentRepository extends ServiceDocumentRepository impl
 {
     use LoggerAwareTrait;
 
-    /** @var AnnotationReader */
-    protected $annotationReader;
-
     /**
      * @param ManagerRegistry $registry
      *
@@ -37,13 +43,20 @@ abstract class AbstractDocumentRepository extends ServiceDocumentRepository impl
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $this->annotationReader = new AnnotationReader();
+        $annotationReader = new AnnotationReader();
 
-        /** @var ObjectManager $manager */
         foreach ($registry->getManagers() as $manager) {
+            if (!$manager instanceof ObjectManager) {
+                continue;
+            }
+
             foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
                 $reflectionClass = $metadata->getReflectionClass();
-                $repositoryClass = $this->getDocumentRepository($reflectionClass);
+
+                $repositoryClass = $this->getDocumentRepository(
+                    $reflectionClass,
+                    $annotationReader
+                );
 
                 if (static::class === $repositoryClass) {
                     parent::__construct($registry, $reflectionClass->getName());
@@ -107,12 +120,15 @@ abstract class AbstractDocumentRepository extends ServiceDocumentRepository impl
 
     /**
      * @param \ReflectionClass $reflectionClass
+     * @param AnnotationReader $annotationReader
      *
      * @return string|null
      */
-    protected function getDocumentRepository(\ReflectionClass $reflectionClass): ?string
-    {
-        $annotations = $this->annotationReader->getClassAnnotations($reflectionClass);
+    protected function getDocumentRepository(
+        \ReflectionClass $reflectionClass,
+        AnnotationReader $annotationReader
+    ): ?string {
+        $annotations = $annotationReader->getClassAnnotations($reflectionClass);
 
         foreach ($annotations as $annotation) {
             if ($annotation instanceof Document) {
