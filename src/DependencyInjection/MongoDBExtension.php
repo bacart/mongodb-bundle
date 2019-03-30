@@ -12,6 +12,7 @@
 namespace Bacart\Bundle\MongoDBBundle\DependencyInjection;
 
 use Bacart\Bundle\MongoDBBundle\Storage\MongoDBStorage;
+use Exception;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -24,7 +25,7 @@ class MongoDBExtension extends Extension
     /**
      * {@inheritdoc}
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -32,7 +33,7 @@ class MongoDBExtension extends Extension
             ->registerForAutoconfiguration(MongoDBStorage::class)
             ->addTag(static::MONGODB_STORAGE_TAG);
 
-        $fileLocator = new FileLocator(\dirname(__DIR__).'/Resources/config');
+        $fileLocator = new FileLocator(dirname(__DIR__).'/Resources/config');
         $loader = new XmlFileLoader($container, $fileLocator);
 
         $loader->load('services.xml');

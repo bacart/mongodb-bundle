@@ -12,18 +12,13 @@
 namespace Bacart\Bundle\MongoDBBundle\Repository;
 
 use Bacart\Bundle\MongoDBBundle\Document\AbstractDocument;
-use Bacart\Bundle\MongoDBBundle\Exception\RepositoryDocumentNotFoundException;
 use Bacart\SymfonyCommon\Aware\Interfaces\LoggerAwareInterface;
 use Bacart\SymfonyCommon\Aware\Traits\LoggerAwareTrait;
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
-use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
-use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Persistence\ObjectManager;
+use Bacart\SymfonyCommon\Repository\AbstractServiceDocumentRepository;
 use Doctrine\ODM\MongoDB\LockMode;
-use Doctrine\ODM\MongoDB\Mapping\Annotations\Document;
 use Doctrine\ODM\MongoDB\MongoDBException;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use InvalidArgumentException;
 
 /**
  * @method AbstractDocument|null findOneBy(array $criteria)
@@ -31,43 +26,9 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  * @method AbstractDocument[]    findBy(array $criteria, array $sort = null, $limit = null, $skip = null)
  * @method AbstractDocument[]    findAll()
  */
-abstract class AbstractDocumentRepository extends ServiceDocumentRepository implements DocumentRepositoryInterface, LoggerAwareInterface
+abstract class AbstractDocumentRepository extends AbstractServiceDocumentRepository implements DocumentRepositoryInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
-
-    /**
-     * @param ManagerRegistry $registry
-     *
-     * @throws RepositoryDocumentNotFoundException
-     * @throws AnnotationException
-     */
-    public function __construct(ManagerRegistry $registry)
-    {
-        $annotationReader = new AnnotationReader();
-
-        foreach ($registry->getManagers() as $manager) {
-            if (!$manager instanceof ObjectManager) {
-                continue;
-            }
-
-            foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
-                $reflectionClass = $metadata->getReflectionClass();
-
-                $repositoryClass = $this->getDocumentRepository(
-                    $reflectionClass,
-                    $annotationReader
-                );
-
-                if (static::class === $repositoryClass) {
-                    parent::__construct($registry, $reflectionClass->getName());
-
-                    return;
-                }
-            }
-        }
-
-        throw new RepositoryDocumentNotFoundException(static::class);
-    }
 
     /**
      * {@inheritdoc}
@@ -94,7 +55,7 @@ abstract class AbstractDocumentRepository extends ServiceDocumentRepository impl
                 ->count()
                 ->getQuery()
                 ->execute();
-        } catch (\InvalidArgumentException | MongoDBException $e) {
+        } catch (InvalidArgumentException | MongoDBException $e) {
             $this->error($e, get_defined_vars());
         }
 
@@ -111,29 +72,8 @@ abstract class AbstractDocumentRepository extends ServiceDocumentRepository impl
                 ->distinct($fieldName)
                 ->getQuery()
                 ->execute();
-        } catch (\InvalidArgumentException | MongoDBException $e) {
+        } catch (InvalidArgumentException | MongoDBException $e) {
             $this->error($e, get_defined_vars());
-        }
-
-        return null;
-    }
-
-    /**
-     * @param \ReflectionClass $reflectionClass
-     * @param AnnotationReader $annotationReader
-     *
-     * @return string|null
-     */
-    protected function getDocumentRepository(
-        \ReflectionClass $reflectionClass,
-        AnnotationReader $annotationReader
-    ): ?string {
-        $annotations = $annotationReader->getClassAnnotations($reflectionClass);
-
-        foreach ($annotations as $annotation) {
-            if ($annotation instanceof Document) {
-                return $annotation->repositoryClass;
-            }
         }
 
         return null;

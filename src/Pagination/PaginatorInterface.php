@@ -12,6 +12,7 @@
 namespace Bacart\Bundle\MongoDBBundle\Pagination;
 
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use LogicException;
 use Symfony\Component\HttpFoundation\Request;
 
 interface PaginatorInterface
@@ -21,7 +22,7 @@ interface PaginatorInterface
      * @param int     $limit
      * @param array   $options
      *
-     * @throws \LogicException
+     * @throws LogicException
      *
      * @return PaginationInterface
      */

@@ -11,15 +11,17 @@
 
 namespace Bacart\Bundle\MongoDBBundle\Field\Interfaces;
 
+use DateTimeInterface;
+
 interface UpdatedAwareInterface
 {
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getUpdated(): \DateTimeInterface;
+    public function getUpdated(): DateTimeInterface;
 
     /**
-     * @param \DateTimeInterface $updated
+     * @param DateTimeInterface $updated
      */
-    public function setUpdated(\DateTimeInterface $updated);
+    public function setUpdated(DateTimeInterface $updated);
 }

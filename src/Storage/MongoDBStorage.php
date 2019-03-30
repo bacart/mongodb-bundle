@@ -20,6 +20,7 @@ use Bacart\SymfonyCommon\Aware\Traits\DocumentManagerAwareTrait;
 use Bacart\SymfonyCommon\Aware\Traits\LoggerAwareTrait;
 use Bacart\SymfonyCommon\Aware\Traits\SessionAwareTrait;
 use Doctrine\ODM\MongoDB\UnitOfWork;
+use InvalidArgumentException;
 
 class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInterface, SessionAwareInterface, LoggerAwareInterface
 {
@@ -35,7 +36,7 @@ class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInt
         try {
             $this->documentManager->persist($document);
             $result = $this->updateDocument($document);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->error($e, get_defined_vars());
             $result = false;
         }
@@ -60,7 +61,7 @@ class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInt
             try {
                 $this->documentManager->flush($document);
                 $result = true;
-            } catch (\InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $this->error($e, get_defined_vars());
                 $result = false;
             }
@@ -83,7 +84,7 @@ class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInt
             $this->documentManager->flush($document);
 
             $result = true;
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->error($e, get_defined_vars());
             $result = false;
         }
@@ -108,7 +109,7 @@ class MongoDBStorage implements MongoDBStorageInterface, DocumentManagerAwareInt
 
         $documentName = sprintf(
             '%s <strong>%s</strong>',
-            ClassUtils::getClassShortName(\get_class($document)),
+            ClassUtils::getClassShortName(get_class($document)),
             $document->getId()
         );
 

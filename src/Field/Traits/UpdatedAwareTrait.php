@@ -11,33 +11,36 @@
 
 namespace Bacart\Bundle\MongoDBBundle\Field\Traits;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Exception;
 
 trait UpdatedAwareTrait
 {
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      *
      * @MongoDB\Field(type="date")
      */
     protected $updated;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getUpdated(): \DateTimeInterface
+    public function getUpdated(): DateTimeInterface
     {
-        return $this->updated ?: new \DateTime();
+        return $this->updated ?: new DateTime();
     }
 
     /**
-     * @param \DateTimeInterface $updated
+     * @param DateTimeInterface $updated
      *
      * @return self
      */
-    public function setUpdated(\DateTimeInterface $updated): self
+    public function setUpdated(DateTimeInterface $updated): self
     {
         $this->updated = $updated;
 

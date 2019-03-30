@@ -13,15 +13,17 @@ namespace Bacart\Bundle\MongoDBBundle\DoctrineEventSubscriber;
 
 use Bacart\Bundle\MongoDBBundle\Field\Interfaces\CreatedAwareInterface;
 use Bacart\Bundle\MongoDBBundle\Field\Interfaces\UpdatedAwareInterface;
+use DateTime;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Exception;
 
 class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
 {
     /**
      * @param LifecycleEventArgs $eventArgs
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function prePersist(LifecycleEventArgs $eventArgs): void
     {
@@ -33,7 +35,7 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
     /**
      * @param PreUpdateEventArgs $eventArgs
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function preUpdate(PreUpdateEventArgs $eventArgs): void
     {
@@ -43,7 +45,7 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
     /**
      * @param LifecycleEventArgs $eventArgs
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return CreatedUpdatedSubscriber
      */
@@ -53,7 +55,7 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
         $document = $eventArgs->getDocument();
 
         if ($document instanceof CreatedAwareInterface) {
-            $document->setCreated(new \DateTime());
+            $document->setCreated(new DateTime());
         }
 
         return $this;
@@ -62,7 +64,7 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
     /**
      * @param LifecycleEventArgs $eventArgs
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return CreatedUpdatedSubscriber
      */
@@ -72,7 +74,7 @@ class CreatedUpdatedSubscriber extends AbstractDoctrineSubscriber
         $document = $eventArgs->getDocument();
 
         if ($document instanceof UpdatedAwareInterface) {
-            $document->setUpdated(new \DateTime());
+            $document->setUpdated(new DateTime());
 
             $this->recomputeSingleDocumentChangeSet($eventArgs, $document);
         }

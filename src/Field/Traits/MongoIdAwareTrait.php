@@ -12,30 +12,31 @@
 namespace Bacart\Bundle\MongoDBBundle\Field\Traits;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use MongoId;
 
 trait MongoIdAwareTrait
 {
     /**
-     * @var \MongoId
+     * @var MongoId
      *
      * @MongoDB\Id()
      */
     protected $id;
 
     /**
-     * @return \MongoId|null
+     * @return MongoId|null
      */
-    public function getId(): ?\MongoId
+    public function getId(): ?MongoId
     {
         return $this->id;
     }
 
     /**
-     * @param \MongoId $id
+     * @param MongoId $id
      *
      * @return self
      */
-    public function setId(\MongoId $id): self
+    public function setId(MongoId $id): self
     {
         $this->id = $id;
 

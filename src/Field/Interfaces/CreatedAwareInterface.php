@@ -11,15 +11,17 @@
 
 namespace Bacart\Bundle\MongoDBBundle\Field\Interfaces;
 
+use DateTimeInterface;
+
 interface CreatedAwareInterface
 {
     /**
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getCreated(): \DateTimeInterface;
+    public function getCreated(): DateTimeInterface;
 
     /**
-     * @param \DateTimeInterface $created
+     * @param DateTimeInterface $created
      */
-    public function setCreated(\DateTimeInterface $created);
+    public function setCreated(DateTimeInterface $created);
 }

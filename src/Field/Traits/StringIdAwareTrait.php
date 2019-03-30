@@ -28,7 +28,7 @@ trait StringIdAwareTrait
     protected $id;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getId(): ?string
     {

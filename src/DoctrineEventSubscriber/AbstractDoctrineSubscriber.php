@@ -19,6 +19,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\UnitOfWork;
+use InvalidArgumentException;
 
 abstract class AbstractDoctrineSubscriber implements EventSubscriber, LoggerAwareInterface
 {
@@ -43,8 +44,8 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber, LoggerAwar
     }
 
     /**
-     * @param LifecycleEventArgs            $eventArgs
-     * @param \object|AbstractDocument|null $document
+     * @param LifecycleEventArgs           $eventArgs
+     * @param object|AbstractDocument|null $document
      *
      * @return array|null
      */
@@ -63,13 +64,13 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber, LoggerAwar
             return null;
         }
 
-        $meta = $documentManager->getClassMetadata(\get_class($document));
+        $meta = $documentManager->getClassMetadata(get_class($document));
 
         try {
             $uow->recomputeSingleDocumentChangeSet($meta, $document);
 
             return $uow->getDocumentChangeSet($document);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->error($e, get_defined_vars());
         }
 

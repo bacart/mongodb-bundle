@@ -11,33 +11,36 @@
 
 namespace Bacart\Bundle\MongoDBBundle\Field\Traits;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Exception;
 
 trait CreatedAwareTrait
 {
     /**
-     * @var \DateTimeInterface
+     * @var DateTimeInterface
      *
      * @MongoDB\Field(type="date")
      */
     protected $created;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
-     * @return \DateTimeInterface
+     * @return DateTimeInterface
      */
-    public function getCreated(): \DateTimeInterface
+    public function getCreated(): DateTimeInterface
     {
-        return $this->created ?: new \DateTime();
+        return $this->created ?: new DateTime();
     }
 
     /**
-     * @param \DateTimeInterface $created
+     * @param DateTimeInterface $created
      *
      * @return self
      */
-    public function setCreated(\DateTimeInterface $created): self
+    public function setCreated(DateTimeInterface $created): self
     {
         $this->created = $created;
 
